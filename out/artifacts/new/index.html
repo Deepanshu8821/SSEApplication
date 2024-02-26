@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Progress Bar with SSE</title>
+    <style>
+        /* Style for the progress bar */
+        #progressBar {
+            width: 100%;
+            background-color: #f1f1f1;
+        }
+
+        #progress {
+            width: 0%;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>Progress Bar with SSE</h1>
+<div id="progressBar">
+    <div id="progress"></div>
+</div>
+
+<script>
+    const progressEventSource = new EventSource('/progressEvents?processId=process-1');
+
+    console.log("progressEventSource");
+
+
+    // for (var i = 0; i < 100; i+=10)
+    //     updateProgressBar(i);
+
+
+    progressEventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log("data: " + data.name);
+        console.log("data: " + data.data);
+        updateProgressBar(data.progress);
+    };
+
+    progressEventSource.onerror = function(event) {
+        console.error("EventSource failed:", event);
+    };
+
+    function updateProgressBar(progress) {
+        const progressBar = document.getElementById("progress");
+        console.log("updateProgressBar : " + progress);
+        progressBar.style.width = progress + "%";
+        progressBar.innerHTML = progress + "%";
+
+        console.log("progressBar");
+
+    }
+
+    fetch('/startProcess')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Process started:", data);
+        })
+        .catch(error => console.error('Error starting process:', error));
+</script>
+</body>
+</html>
