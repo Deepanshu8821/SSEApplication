@@ -50,4 +50,4 @@ jobs:
           app-name: 'SSEListeners'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_44E6F59FB8234E37A8686C785A58084D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24050F9799E84081AFF3C02849F8B852 }}
